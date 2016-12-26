@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<link rel="apple-touch-icon" href="icon.png" />
+<link rel="apple-touch-startup-image" href="startup.png" />
+
+<title>Tryout</title>
+
+<style type="text/css" charset="utf-8">
+
+html, body {
+	margin: 0;
+	padding: 0;
+	background-color: black;
+overflow: hidden;
+}
+
+#view {
+	background-color: white;
+	position: absolute;
+	top: 21px;
+	left: 0;
+	width: 100%;
+	-webkit-transition: opacity .9s ease;
+}
+
+#counter {
+	color: white;
+	margin: auto;
+	position: absolute;
+	top:21px;
+	left:0;
+	width: 100%;
+	font-size: 42pt;
+	font-family: Helvetica;
+	text-align: center;
+}
+
+.notransition {
+	transition: none !important;
+	-webkit-transition: none !important;
+}
+
+</style>
+
+<script type="text/javascript" charset="utf-8">
+
+	var timing_the_beat = 0;
+	var tap_timing = 0;
+	var tap_now = 0;
+	var i = 0;
+
+	var taps = 8;
+
+	var view;
+	var blinkInterval;
+		
+function init()
+{
+
+view = document.getElementById("view");
+
+view.style.opacity = 0;
+
+view.style.height=(window.innerHeight-21)+"px";
+
+document.getElementById("counter").style.top=((window.innerHeight/2)-(document.getElementById("counter").offsetHeight/2)-21)+"px";
+
+
+view.addEventListener("touchstart", tapHandler);
+
+}
+
+function blinkView() {
+
+view.setAttribute("class", "notransition");
+
+view.style.opacity = 1;
+
+setTimeout(function() {
+view.setAttribute("class", "");
+view.style.opacity = 0; }, 10);
+
+}
+
+function tapHandler(event) {
+
+    event.preventDefault();
+
+if (i==0) { tap_now = Date.now(); document.getElementById("counter").innerHTML=taps-i; document.getElementById("counter").style.font="72pt Helvetica"; document.getElementById("counter").style.top=((window.innerHeight/2)-(document.getElementById("counter").offsetHeight/2)-21)+"px"; }
+
+if (i==2) { tap_timing=Date.now()-tap_now; tap_now=Date.now(); timing_the_beat = tap_timing; }
+
+if (i>2) {
+ tap_timing = Date.now()-tap_now;
+ tap_now = Date.now();
+
+timing_the_beat = Math.round((timing_the_beat+tap_timing)/2);
+}
+
+document.getElementById("counter").innerHTML=taps-i;
+
+if (i==taps) {
+
+blinkInterval = setInterval(blinkView, timing_the_beat);
+
+view.removeEventListener("touchstart", tapHandler);
+document.getElementById("counter").style.visibility="hidden";
+
+}
+
+blinkView();
+i++;
+
+}
+
+</script>
+</head>
+<body onload="init()">
+<p id="counter">Tap to start.</p>
+<div id="view" onclick="tapHandler()"></div>
+</body>
+</html>
