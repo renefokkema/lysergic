@@ -72,6 +72,7 @@ document.getElementById("counter").style.top=((window.innerHeight/2)-(document.g
 
 
 view.addEventListener("touchstart", tapHandler);
+view.addEventListener("click", tapHandler);
 
 }
 
@@ -122,6 +123,6 @@ i++;
 </head>
 <body onload="init()">
 <p id="counter">Tap to start.</p>
-<div id="view" onclick="tapHandler()"></div>
+<div id="view"></div>
 </body>
 </html>
